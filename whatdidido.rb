@@ -5,7 +5,7 @@ class Whatdidido < Formula
   desc "A pretty wrapper for your shell history"
   homepage "https://github.com/link-coder100788/WhatDidIDo"
   url "https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/v1.3.2.tar.gz"
-  sha256 "REPLACE_WITH_SHA256_AFTER_TAGGING_RELEASE"
+  sha256 "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed"
   license "MIT"
   head "https://github.com/link-coder100788/WhatDidIDo.git", branch: "main"
 
