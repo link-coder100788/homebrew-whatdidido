@@ -1,0 +1,64 @@
+name: Update formula
+
+# Trigger this workflow manually or via a repository_dispatch event from
+# the main WhatDidIDo repo (e.g. after publishing a GitHub Release there).
+#
+# To call from the main repo's release workflow:
+#
+#   - name: Trigger tap update
+#     uses: peter-evans/repository-dispatch@v3
+#     with:
+#       token: ${{ secrets.TAP_GITHUB_TOKEN }}
+#       repository: link-coder100788/homebrew-whatdidido
+#       event-type: new-release
+#       client-payload: '{"version": "${{ github.ref_name }}"}'
+
+on:
+  repository_dispatch:
+    types: [new-release]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version tag to update to (e.g. v1.3.3)"
+        required: true
+
+jobs:
+  update:
+    name: Bump formula
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out tap
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve version
+        id: ver
+        run: |
+          VERSION="${{ github.event.client_payload.version || inputs.version }}"
+          # Strip leading 'v' for the formula version field
+          echo "tag=${VERSION}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION#v}" >> $GITHUB_OUTPUT
+
+      - name: Download tarball and compute sha256
+        id: sha
+        run: |
+          URL="https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/${{ steps.ver.outputs.tag }}.tar.gz"
+          SHA=$(curl -sL "$URL" | shasum -a 256 | awk '{print $1}')
+          echo "sha256=${SHA}" >> $GITHUB_OUTPUT
+          echo "url=${URL}" >> $GITHUB_OUTPUT
+
+      - name: Update formula
+        run: |
+          sed -i \
+            -e 's|url "https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/.*"|url "${{ steps.sha.outputs.url }}"|' \
+            -e 's|sha256 ".*"|sha256 "${{ steps.sha.outputs.sha256 }}"|' \
+            Formula/whatdidido.rb
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/whatdidido.rb
+          git commit -m "whatdidido ${{ steps.ver.outputs.version }}"
+          git push

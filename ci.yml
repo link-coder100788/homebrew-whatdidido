@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit:
+    name: brew audit
+    runs-on: macos-latest
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Check out tap
+        uses: actions/checkout@v4
+
+      - name: Tap this repo
+        run: brew tap link-coder100788/whatdidido $(pwd)
+
+      - name: Audit formula
+        run: brew audit --strict link-coder100788/whatdidido/whatdidido
+
+  # Uncomment once the first tagged release exists and sha256 is filled in.
+  # install:
+  #   name: brew install
+  #   runs-on: macos-latest
+  #   needs: audit
+  #   steps:
+  #     - uses: Homebrew/actions/setup-homebrew@master
+  #     - uses: actions/checkout@v4
+  #     - run: brew tap link-coder100788/whatdidido $(pwd)
+  #     - run: brew install --build-from-source link-coder100788/whatdidido/whatdidido
+  #     - run: brew test link-coder100788/whatdidido/whatdidido
