@@ -16,13 +16,13 @@ class Whatdidido < Formula
   def install
 	  on_macos do
 		  system "swift", "build", "--disable-sandbox", "-c", "release"
+		  bin.install ".build/release/whatdidido" # Not case-sensitive,
 	  end
 	  
 	  on_linux do
 		  system "#{Formula["swift"].opt_bin}/swift", "build", "--disable-sandbox", "-c", "release"
+		  bin.install ".build/release/WhatDidIDo" => "whatdidido"
 	  end
-	  
-	  bin.install ".build/release/whatdidido"
 	end
 
   test do
