@@ -3,7 +3,7 @@
 
 class Whatdidido < Formula
   desc "A pretty wrapper for your shell history"
-  homepage "https://github.com/link-coder100788/WhatDidIDo"
+  homepage "https://link-coder100788.github.io/WhatDidIDo/"
   url "https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/v1.3.4.tar.gz"
   sha256 "4d7d41e2f760c04dbca1bf38eb866e25c5e8f00b135b5679461f9ff16c36f898"
   license "MIT"
