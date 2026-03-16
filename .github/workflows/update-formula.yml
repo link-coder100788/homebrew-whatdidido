@@ -1,18 +1,5 @@
 name: Update formula
 
-# Trigger this workflow manually or via a repository_dispatch event from
-# the main WhatDidIDo repo (e.g. after publishing a GitHub Release there).
-#
-# To call from the main repo's release workflow:
-#
-#   - name: Trigger tap update
-#     uses: peter-evans/repository-dispatch@v3
-#     with:
-#       token: ${{ secrets.TAP_GITHUB_TOKEN }}
-#       repository: link-coder100788/homebrew-whatdidido
-#       event-type: new-release
-#       client-payload: '{"version": "${{ github.ref_name }}"}'
-
 on:
   repository_dispatch:
     types: [new-release]
@@ -22,6 +9,9 @@ on:
         description: "Version tag to update to (e.g. v1.3.3)"
         required: true
 
+permissions:
+  contents: write
+
 jobs:
   update:
     name: Bump formula
@@ -29,8 +19,12 @@ jobs:
     steps:
       - name: Check out tap
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug — confirm checkout
+        run: |
+          echo "workspace: $GITHUB_WORKSPACE"
+          ls -la "$GITHUB_WORKSPACE"
+          ls -la "$GITHUB_WORKSPACE/Formula" || echo "Formula dir missing!"
 
       - name: Resolve version
         id: ver
@@ -50,13 +44,10 @@ jobs:
       - name: Update formula
         run: |
           FORMULA="$GITHUB_WORKSPACE/Formula/whatdidido.rb"
-          echo "Updating $FORMULA"
-          cat "$FORMULA"
           sed -i \
             -e 's|url "https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/.*"|url "${{ steps.sha.outputs.url }}"|' \
             -e 's|sha256 ".*"|sha256 "${{ steps.sha.outputs.sha256 }}"|' \
             "$FORMULA"
-          echo "--- after ---"
           cat "$FORMULA"
 
       - name: Commit and push
