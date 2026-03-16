@@ -15,7 +15,7 @@ class Whatdidido < Formula
 
   def install
 	  on_macos do
-		  system "xcrun", "swift", "build", "--disable-sandbox", "-c", "release"
+		  system "swift", "build", "--disable-sandbox", "-c", "release"
 	  end
 	  
 	  on_linux do
