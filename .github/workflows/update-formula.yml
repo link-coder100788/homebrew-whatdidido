@@ -36,7 +36,6 @@ jobs:
         id: ver
         run: |
           VERSION="${{ github.event.client_payload.version || inputs.version }}"
-          # Strip leading 'v' for the formula version field
           echo "tag=${VERSION}" >> $GITHUB_OUTPUT
           echo "version=${VERSION#v}" >> $GITHUB_OUTPUT
 
@@ -44,16 +43,21 @@ jobs:
         id: sha
         run: |
           URL="https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/${{ steps.ver.outputs.tag }}.tar.gz"
-          SHA=$(curl -sL "$URL" | shasum -a 256 | awk '{print $1}')
+          SHA=$(curl -sL "$URL" | sha256sum | awk '{print $1}')
           echo "sha256=${SHA}" >> $GITHUB_OUTPUT
           echo "url=${URL}" >> $GITHUB_OUTPUT
 
       - name: Update formula
         run: |
+          FORMULA="$GITHUB_WORKSPACE/Formula/whatdidido.rb"
+          echo "Updating $FORMULA"
+          cat "$FORMULA"
           sed -i \
             -e 's|url "https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/.*"|url "${{ steps.sha.outputs.url }}"|' \
             -e 's|sha256 ".*"|sha256 "${{ steps.sha.outputs.sha256 }}"|' \
-            Formula/whatdidido.rb
+            "$FORMULA"
+          echo "--- after ---"
+          cat "$FORMULA"
 
       - name: Commit and push
         run: |
