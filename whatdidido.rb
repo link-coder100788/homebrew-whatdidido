@@ -10,7 +10,7 @@ class Whatdidido < Formula
   head "https://github.com/link-coder100788/WhatDidIDo.git", branch: "main"
   
   on_linux do
-	  depends_on "swift-lang" => :build
+	  depends_on "swift" => :build
   end
 
   def install
