@@ -22,3 +22,6 @@ let output = String(data: data, encoding: .utf8)!
 
 print(output)
 
+print("Commit MSG:")
+print("Update SHA256 and URL for \(input!)")
+
