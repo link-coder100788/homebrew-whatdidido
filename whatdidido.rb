@@ -19,7 +19,7 @@ class Whatdidido < Formula
 	  end
 	  
 	  on_linux do
-		  system "swift", "build", "--disable-sandbox", "-c", "release"
+		  system "#{Formula["swift"].opt_bin}/swift", "build", "--disable-sandbox", "-c", "release"
 	  end
 	  
 	  bin.install ".build/release/whatdidido"
