@@ -9,12 +9,10 @@ class Whatdidido < Formula
   license "MIT"
   head "https://github.com/link-coder100788/WhatDidIDo.git", branch: "main"
 
-  # Swift 5.9+ is required (ships with Xcode 15+)
-  depends_on xcode: ["15.0", :build]
   depends_on :macos
 
   def install
-    system "swift", "build", "--disable-sandbox", "-c", "release"
+    system "xcrun", "swift", "build", "--disable-sandbox", "-c", "release"
     bin.install ".build/release/whatdidido"
   end
 
