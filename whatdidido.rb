@@ -8,12 +8,6 @@ class Whatdidido < Formula
   sha256 "6e3e4eca5711f04fea55c59e2b020187f6dc0cc3ed5a8a2b87e14e7f375adb40"
   license "MIT"
   head "https://github.com/link-coder100788/WhatDidIDo.git", branch: "main"
-
-  depends_on :macos => :build
-  
-  on_macos do
-	  depends_on xcode: ["14.0", :build]
-  end
   
   on_linux do
 	  depends_on "swift-lang" => :build
