@@ -4,8 +4,8 @@
 class Whatdidido < Formula
   desc "A pretty wrapper for your shell history"
   homepage "https://link-coder100788.github.io/WhatDidIDo/"
-  url "https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/v1.3.6.tar.gz"
-  sha256 "9257928a20729dcb19264a3c9671589fa7098102ffde0637b7eef149dd9feb02"
+  url "https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/v1.3.7.tar.gz"
+  sha256 "4d1bc524f25b7ec7ca2a9862663c9f73900ce9c76ef265f3d9884c9a287e0901"
   license "MIT"
   head "https://github.com/link-coder100788/WhatDidIDo.git", branch: "main"
   
@@ -16,12 +16,12 @@ class Whatdidido < Formula
   def install
 	  on_macos do
 		  system "swift", "build", "--disable-sandbox", "-c", "release"
-		  bin.install ".build/release/whatdidido" # Not case-sensitive,
+		  bin.install ".build/release/whatdidido" # As of v1.3.7 this is executable name
 	  end
 	  
 	  on_linux do
 		  system "#{Formula["swift"].opt_bin}/swift", "build", "--disable-sandbox", "-c", "release"
-		  bin.install ".build/release/WhatDidIDo" => "whatdidido"
+		  bin.install ".build/release/whatdidido" # As of v1.3.7 this is executable name
 	  end
 	end
 
