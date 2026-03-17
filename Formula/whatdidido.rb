@@ -4,8 +4,8 @@
 class Whatdidido < Formula
   desc "A pretty wrapper for your shell history"
   homepage "https://link-coder100788.github.io/WhatDidIDo/"
-  url "https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/v1.5.1.tar.gz"
-  sha256 "64a3e614e978f65399fd6d54c2608bf7f479a431cf80983ae38141d75afc917d"
+  url "https://github.com/link-coder100788/WhatDidIDo/archive/refs/tags/v1.5.2.tar.gz"
+  sha256 "713019739151a2b7257b08840ca787c8cadcaa3808cff4a50c31f7f8b39dc7e5"
   license "MIT"
   head "https://github.com/link-coder100788/WhatDidIDo.git", branch: "main"
   
